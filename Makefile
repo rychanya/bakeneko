@@ -5,4 +5,4 @@ prety:
 	poetry run isort .
 	poetry run black .
 test:
-	poetry run pytest
+	poetry run pytest --cov-report html --cov=bakeneko tests/
