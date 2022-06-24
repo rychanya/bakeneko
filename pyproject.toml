@@ -11,6 +11,8 @@ SQLAlchemy = {extras = ["asyncio"], version = "^1.4.37"}
 psycopg2-binary = "^2.9.3"
 asyncpg = "^0.25.0"
 pydantic = "^1.9.1"
+uvicorn = {extras = ["standard"], version = "^0.18.1"}
+fastapi = "^0.78.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"
