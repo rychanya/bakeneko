@@ -3,6 +3,8 @@ from testcontainers.postgres import PostgresContainer
 
 from bakeneko.db import get_engine
 from bakeneko.db.scheme import Base
+from bakeneko.web import app
+from bakeneko.web.dependencies import engine_depend
 
 
 @pytest.fixture
@@ -22,3 +24,9 @@ def engine():
 def clear_db(engine):
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
+
+
+@pytest.fixture
+def app_fix(engine):
+    app.dependency_overrides[engine_depend] = lambda: engine
+    return app
