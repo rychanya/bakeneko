@@ -1,6 +1,8 @@
+from uuid import uuid4
+
 import pytest
 
-from bakeneko.db.question import get_or_create
+from bakeneko.db.question import get_by_id, get_or_create
 from bakeneko.models.question import Question
 from bakeneko.models.types import TypeEnum
 
@@ -93,3 +95,18 @@ def test_with_one_questions(engine, question_model: Question):
     assert question_model.text == q.text
     assert set(question_model.all_answers) == set(q.all_answers)
     assert set(question_model.all_extra_answers) == set(q.all_extra_answers)
+
+
+@pytest.mark.usefixtures("clear_db")
+def test_get_by_id(engine):
+    q1 = get_by_id(engine, uuid4())
+
+    assert q1 is None
+
+    _, q2 = get_or_create(
+        engine, Question(**{"question_type": TypeEnum.ONE, "text": "text"})
+    )
+
+    q3 = get_by_id(engine, q2.question_id)
+
+    assert q3 == q2
