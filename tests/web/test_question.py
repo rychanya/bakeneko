@@ -5,6 +5,7 @@ from bakeneko.models.types import TypeEnum
 
 
 @pytest.mark.anyio
+@pytest.mark.usefixtures("clear_db")
 async def test_root2(app_fix):
     url = app_fix.url_path_for("get_or_create_question")
     json_data = {
