@@ -1,3 +1,4 @@
+from pydantic import UUID4
 from sqlalchemy import and_, select
 from sqlalchemy.orm import Session
 
@@ -41,3 +42,12 @@ def get_or_create(engine, question: Question) -> tuple[bool, QuestionInDB]:
             return True, QuestionInDB.from_orm(question_orm)
         else:
             return False, QuestionInDB.from_orm(result)
+
+
+def get_by_id(engine, _id: UUID4) -> QuestionInDB | None:
+    with Session(engine) as session:
+        result = session.get(QuestionORM, _id)
+        if result is None:
+            return
+        else:
+            return QuestionInDB.from_orm(result)
