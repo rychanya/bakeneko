@@ -1,6 +1,6 @@
 from pydantic import UUID4, BaseModel
 
-from bakeneko.models.types import AnswersList
+from bakeneko.models.types import AnswersList, ListOfNotEmptyStrings
 
 
 class Answer(BaseModel):
@@ -10,6 +10,7 @@ class Answer(BaseModel):
     question_id: UUID4
     is_correct: bool
     answer: AnswersList
+    extra_answer: ListOfNotEmptyStrings = []
 
 
 class AnswerInDB(Answer):
