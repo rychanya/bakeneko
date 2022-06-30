@@ -7,4 +7,4 @@ prety:
 test:
 	poetry run pytest --cov-report html --cov=bakeneko tests/
 serv:
-	poetry run uvicorn bakeneko.web:app --reload
+	poetry run python bakeneko/dev_server.py
