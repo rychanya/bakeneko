@@ -8,3 +8,5 @@ test:
 	poetry run pytest --cov-report html --cov=bakeneko tests/
 serv:
 	docker compose -f "docker-compose.yml" up -d --build
+clean:
+	docker volume rm bakeneko_postgres_data
