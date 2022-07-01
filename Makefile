@@ -7,4 +7,4 @@ prety:
 test:
 	poetry run pytest --cov-report html --cov=bakeneko tests/
 serv:
-	poetry run python bakeneko/dev_server.py
+	docker compose -f "docker-compose.yml" up -d --build
