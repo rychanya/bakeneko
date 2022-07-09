@@ -5,10 +5,11 @@ prety:
 	poetry run isort .
 	poetry run black .
 serv:
-	docker compose -f "docker-compose.yml" up -d --build
-clean:
-	docker volume rm bakeneko_postgres_data
+	docker compose up -d --build
 test: prety lint
-	docker compose -f "docker-compose-dev.yml" up -d --build
-	docker wait bakeneko-test
-	docker compose -f "docker-compose-dev.yml" down
+	BAKENEKO_TARGET=dev docker compose up -d --build
+	docker wait bakeneko-web
+	rm -rf ./reports/*
+	docker cp bakeneko-web:/code/htmlcov ./reports/cov
+	docker cp bakeneko-web:/code/report.html ./reports/report.html
+	docker compose down -v
