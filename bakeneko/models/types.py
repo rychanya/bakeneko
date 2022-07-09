@@ -14,13 +14,13 @@ class NotEmptyString(ConstrainedStr):
     strict = True
 
 
-ListOfNotEmptyStrings = conlist(
+ListOfStrings = conlist(
     item_type=NotEmptyString,
     max_items=_MAX_LIST_LENGTH,
     unique_items=True,
 )
 
-AnswersList = conlist(
+NotEmptyListOfStrings = conlist(
     item_type=NotEmptyString,
     min_items=1,
     max_items=_MAX_LIST_LENGTH,

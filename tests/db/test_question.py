@@ -2,7 +2,8 @@ from uuid import uuid4
 
 import pytest
 
-from bakeneko.db.question import get_by_id, get_or_create
+from bakeneko.db import session_factory
+from bakeneko.db.question_crud import get_by_id, get_or_create
 from bakeneko.models.question import Question
 from bakeneko.models.types import TypeEnum
 
@@ -51,11 +52,10 @@ from bakeneko.models.types import TypeEnum
         ),
     ],
 )
-def test_with_same_questions(
-    engine, question_model_1: Question, question_model_2: Question
-):
-    is_new1, q1 = get_or_create(engine, question=question_model_1)
-    is_new2, q2 = get_or_create(engine, question=question_model_2)
+def test_with_same_questions(question_model_1: Question, question_model_2: Question):
+    with session_factory() as session:
+        is_new1, q1 = get_or_create(session, question=question_model_1)
+        is_new2, q2 = get_or_create(session, question=question_model_2)
 
     assert is_new1 is True
     assert is_new2 is False
@@ -88,8 +88,9 @@ def test_with_same_questions(
         ),
     ],
 )
-def test_with_one_questions(engine, question_model: Question):
-    _, q = get_or_create(engine, question_model)
+def test_with_one_questions(question_model: Question):
+    with session_factory() as session:
+        _, q = get_or_create(session, question_model)
 
     assert question_model.question_type == q.question_type
     assert question_model.text == q.text
@@ -98,15 +99,18 @@ def test_with_one_questions(engine, question_model: Question):
 
 
 @pytest.mark.usefixtures("clear_db")
-def test_get_by_id(engine):
-    q1 = get_by_id(engine, uuid4())
+def test_get_by_id():
+    with session_factory() as session:
+        q1 = get_by_id(session, uuid4())
 
     assert q1 is None
 
-    _, q2 = get_or_create(
-        engine, Question(**{"question_type": TypeEnum.ONE, "text": "text"})
-    )
+    with session_factory() as session:
+        _, q2 = get_or_create(
+            session, Question(**{"question_type": TypeEnum.ONE, "text": "text"})
+        )
 
-    q3 = get_by_id(engine, q2.question_id)
+    with session_factory() as session:
+        q3 = get_by_id(session, q2.question_id)
 
     assert q3 == q2

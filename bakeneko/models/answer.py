@@ -1,16 +1,20 @@
 from pydantic import UUID4, BaseModel
 
-from bakeneko.models.types import AnswersList, ListOfNotEmptyStrings
+from bakeneko.models.types import ListOfStrings, NotEmptyListOfStrings
 
 
-class Answer(BaseModel):
+class BaseAnswer(BaseModel):
     class Config:
         orm_mode = True
 
-    question_id: UUID4
     is_correct: bool
-    answer: AnswersList
-    extra_answer: ListOfNotEmptyStrings = []
+    answer: NotEmptyListOfStrings
+    extra_answer: ListOfStrings = []
+
+
+class Answer(BaseAnswer):
+
+    question_id: UUID4 | None = None
 
 
 class AnswerInDB(Answer):
