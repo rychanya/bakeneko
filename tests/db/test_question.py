@@ -3,7 +3,8 @@ from uuid import uuid4
 import pytest
 
 from bakeneko.db import session_factory
-from bakeneko.db.question_crud import get_by_id, get_or_create
+from bakeneko.db.question_crud import get_by_id, get_or_create, search
+from bakeneko.db.scheme import QuestionORM
 from bakeneko.models.question import Question
 from bakeneko.models.types import TypeEnum
 
@@ -114,3 +115,18 @@ def test_get_by_id():
         q3 = get_by_id(session, q2.question_id)
 
     assert q3 == q2
+
+
+@pytest.mark.usefixtures("clear_db")
+def test_search():
+    question1 = QuestionORM(
+        question_type="ONE", text="все коты", all_answers=[], all_extra_answers=[]
+    )
+    with session_factory() as session:
+        session.add(question1)
+        session.commit()
+
+    with session_factory() as session:
+        question_list = search(session, "все кот")
+
+    assert question1.question_id == question_list[0].question_id

@@ -58,3 +58,11 @@ def get_by_id(session: Session, _id: UUID4) -> QuestionInDB | None:
     result = session.get(QuestionORM, _id)
     if result is not None:
         return QuestionInDB.from_orm(result)
+
+
+def search(session: Session, q: str) -> list[QuestionORM]:
+    return (
+        session.execute(select(QuestionORM).where(QuestionORM.text.ilike(f"%{q}%")))
+        .scalars()
+        .all()
+    )

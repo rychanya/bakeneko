@@ -1,15 +1,5 @@
-import asyncio
+from telegram import Bot
 
-from loguru import logger
+from bakeneko.config import settings
 
-
-async def test_as():
-    n = 0
-
-    while True:
-        try:
-            await asyncio.sleep(1)
-            n = n + 1
-            logger.info(f"{n} task loguru")
-        except asyncio.CancelledError:
-            break
+bot = Bot(settings.TG_TOKEN)

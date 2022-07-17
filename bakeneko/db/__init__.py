@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker
 
 from bakeneko.config import settings
 
-engine = create_engine(url=settings.db_url, future=True)
+engine = create_engine(url=settings.db_url, future=True, echo=True)
 session_factory = sessionmaker(bind=engine, expire_on_commit=False)
 
 

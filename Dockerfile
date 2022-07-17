@@ -9,7 +9,9 @@ WORKDIR /code
 COPY --from=requirements-stage /tmp/requirements.txt /code/requirements.txt
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 COPY ./bakeneko /code/bakeneko
-CMD ["uvicorn", "bakeneko.web:app", "--host", "0.0.0.0"]
+CMD ["uvicorn", "bakeneko.web:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "80"]
+EXPOSE 80
+
 
 FROM python:3.10 as requirements-dev-stage
 WORKDIR /tmp
