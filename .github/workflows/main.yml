@@ -18,8 +18,11 @@ jobs:
     steps:
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
+      env:
+        BAKENEKO_DOT_ENV: ${{ secrets.BAKENEKO_DOT_ENV }}
       with:
+        envs: BAKENEKO_DOT_ENV
         host: ${{ secrets.SSH_HOST_IP }}
         username: ${{ secrets.SSH_USERNAME }}
         password: ${{ secrets.SSH_PASSWORD }}
-        script: echo ${{ secrets.BAKENEKO_DOT_ENV }} > /app/env
+        script: echo $BAKENEKO_DOT_ENV > /app/env
