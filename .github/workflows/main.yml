@@ -22,4 +22,4 @@ jobs:
         host: ${{ secrets.SSH_HOST_IP }}
         username: ${{ secrets.SSH_USERNAME }}
         password: ${{ secrets.SSH_PASSWORD }}
-        script: echo "${{ secrets.BAKENEKO_DOT_ENV }}" > /app/env
+        script: echo ${{ secrets.BAKENEKO_DOT_ENV }} > /app/env
