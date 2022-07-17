@@ -26,5 +26,5 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         password: ${{ secrets.SSH_PASSWORD }}
         script: |
-          touch /app/env
-          echo $BAKENEKO_DOT_ENV > /app/env
+          touch /code/env
+          echo $BAKENEKO_DOT_ENV > /code/env
