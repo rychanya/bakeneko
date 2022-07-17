@@ -22,4 +22,4 @@ jobs:
         host: ${{ secrets.SSH_HOST_IP }}
         username: ${{ secrets.SSH_USERNAME }}
         password: ${{ secrets.SSH_PASSWORD }}
-        script: EXPORT POSTGRES_PORT=5432
+        script: export POSTGRES_PORT=5432
