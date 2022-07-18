@@ -13,14 +13,23 @@ jobs:
         POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
         POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
         TG_TOKEN: ${{ secrets.TG_TOKEN }}
+        CASERVER: ${{ secrets.CASERVER}}
+        BAKENEKO_HOST: ${{ secrets.BAKENEKO_HOST }}
       with:
-        envs: POSTGRES_USER,POSTGRES_PASSWORD,POSTGRES_DB,POSTGRES_PORT,TG_TOKEN
+        envs: POSTGRES_USER,POSTGRES_PASSWORD,POSTGRES_DB,POSTGRES_PORT,TG_TOKEN,CASERVER,BAKENEKO_HOST
         host: ${{ secrets.SSH_HOST_IP }}
         username: ${{ secrets.SSH_USERNAME }}
         password: ${{ secrets.SSH_PASSWORD }}
         script: |
-          echo POSTGRES_USER=$POSTGRES_USER > .env
-          echo POSTGRES_PASSWORD=$POSTGRES_PASSWORD >> .env
-          echo POSTGRES_DB=$POSTGRES_DB >> .env
-          echo POSTGRES_PORT=$POSTGRES_PORT >> .env
-          echo TG_TOKEN=$TG_TOKEN >> .env
+          docker compose down -f bakeneko/docker-compose.yml
+          rm -rf bakeneko/
+          git clone https://github.com/rychanya/bakeneko.git
+          echo POSTGRES_USER=$POSTGRES_USER > bakeneko/.env
+          echo POSTGRES_PASSWORD=$POSTGRES_PASSWORD >> bakeneko/.env
+          echo POSTGRES_DB=$POSTGRES_DB >> bakeneko/.env
+          echo POSTGRES_PORT=$POSTGRES_PORT >> bakeneko/.env
+          echo TG_TOKEN=$TG_TOKEN >> bakeneko/.env
+          echo CASERVER=$CASERVER >> bakeneko/.env
+          echo BAKENEKO_HOST=$BAKENEKO_HOST >> bakeneko/.env
+          cd bakeneko/
+          docker compose up -d --build

@@ -4,6 +4,8 @@ services:
   traefik:
     image: "traefik:v2.8"
     container_name: "traefik"
+    env_file:
+      - .env
     command:
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
@@ -12,7 +14,7 @@ services:
       - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
       - "--entrypoints.websecure.address=:443"
       - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-      - "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.myresolver.acme.caserver=${CASERVER}"
       - "--certificatesresolvers.myresolver.acme.email=rychanya@gmail.com"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     ports:
@@ -27,30 +29,25 @@ services:
     container_name: bakeneko-web
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.web.rule=Host(`${BAKENEKO_HOST:-localhost}`)"
+      - "traefik.http.routers.web.rule=Host(`${BAKENEKO_HOST}`)"
       - "traefik.http.routers.web.entrypoints=websecure"
       - "traefik.http.routers.web.tls.certresolver=myresolver"
     build:
       target: ${BAKENEKO_TARGET:-prod}
-    environment:
-      - POSTGRES_USER
-      - POSTGRES_PASSWORD
-      - POSTGRES_DB
-      - POSTGRES_PORT
-      - TG_TOKEN
+    env_file:
+      - .env
     depends_on:
       - db
       
   db:
     image: postgres
+    container_name: bakeneko-db
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     expose:
       - ${POSTGRES_PORT}
-    environment:
-      - POSTGRES_USER
-      - POSTGRES_PASSWORD
-      - POSTGRES_DB
+    env_file:
+      - .env
 
 volumes:
   postgres_data:
