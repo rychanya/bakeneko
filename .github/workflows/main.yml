@@ -1,28 +1,26 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
-
-# Controls when the workflow will run
 on:
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
       env:
-        BAKENEKO_DOT_ENV: ${{ secrets.BAKENEKO_DOT_ENV }}
+        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+        TG_TOKEN: ${{ secrets.TG_TOKEN }}
       with:
-        envs: BAKENEKO_DOT_ENV
+        envs: POSTGRES_USER,POSTGRES_PASSWORD,POSTGRES_DB,POSTGRES_PORT,TG_TOKEN
         host: ${{ secrets.SSH_HOST_IP }}
         username: ${{ secrets.SSH_USERNAME }}
         password: ${{ secrets.SSH_PASSWORD }}
-        script: echo $BAKENEKO_DOT_ENV > env
+        script: |
+          echo $POSTGRES_USER > .env
+          echo $POSTGRES_PASSWORD >> .env
+          echo $POSTGRES_DB >> .env
+          echo $POSTGRES_PORT >> .env
+          echo $TG_TOKEN >> .env
