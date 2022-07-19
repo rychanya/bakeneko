@@ -1,26 +1,13 @@
-from pprint import pprint
-
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 
 from bakeneko.db import engine, wait_until_db_ready
 from bakeneko.db.scheme import Base
-from bakeneko.web.routers import add_answer, question
+from bakeneko.web.routers import add_answer, question, webhook
 
 app = FastAPI()
 app.include_router(question.router)
 app.include_router(add_answer.router)
-
-
-@app.get("/")
-async def root():
-    return {"res": "ok"}
-
-
-@app.post("/secretwebhook")
-async def webhook(request: Request):
-    update = await request.json()
-    pprint(update)
-    return "ok"
+app.include_router(webhook.router)
 
 
 @app.on_event("startup")
