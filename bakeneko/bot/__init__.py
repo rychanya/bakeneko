@@ -9,6 +9,5 @@ bot = Bot(settings.TG_TOKEN)
 
 
 async def handle_update(update: dict):
-    # pprint(update)
+    pprint(update)
     print(Update.parse_obj(update))
-
