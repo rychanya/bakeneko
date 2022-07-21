@@ -20,19 +20,19 @@ def fake(page: int):
         ),
         InlineQueryResultArticle(
             id=f"{page}_one",
-            title="",
+            title=" ",
             description=f"{page} one",
             input_message_content=InputTextMessageContent(message_text=str(page)),
         ),
         InlineQueryResultArticle(
             id=f"{page}_two",
-            title="",
+            title=" ",
             description=f"{page} two",
             input_message_content=InputTextMessageContent(message_text=str(page)),
         ),
         InlineQueryResultArticle(
             id=f"{page}_3",
-            title="",
+            title=" ",
             description=f"{page} 3",
             input_message_content=InputTextMessageContent(message_text=str(page)),
         ),
