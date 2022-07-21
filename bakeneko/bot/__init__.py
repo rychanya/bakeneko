@@ -13,12 +13,29 @@ def fake(page: int):
         return
     return [
         InlineQueryResultArticle(
-            id=str(i),
-            title=f"{i} Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            description="1 fjvjindnenvnuenuvnru\n2 dfejn efrefr efdvdever ervvevev ergeg\3 fkgn",
-            input_message_content=InputTextMessageContent(message_text=str(i)),
-        )
-        for i in range(page * 10, (page + 1) * 10)
+            id=f"{page}_title",
+            title=f"{page} title",
+            description="",
+            input_message_content=InputTextMessageContent(message_text=str(page)),
+        ),
+        InlineQueryResultArticle(
+            id=f"{page}_one",
+            title="",
+            description=f"{page} one",
+            input_message_content=InputTextMessageContent(message_text=str(page)),
+        ),
+        InlineQueryResultArticle(
+            id=f"{page}_two",
+            title="",
+            description=f"{page} two",
+            input_message_content=InputTextMessageContent(message_text=str(page)),
+        ),
+        InlineQueryResultArticle(
+            id=f"{page}_3",
+            title="",
+            description=f"{page} 3",
+            input_message_content=InputTextMessageContent(message_text=str(page)),
+        ),
     ]
 
 
