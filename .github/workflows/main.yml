@@ -13,11 +13,12 @@ jobs:
         POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
         POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
         TG_TOKEN: ${{ secrets.TG_TOKEN }}
+        TG_WEB_HOOK_NAME: ${{ secrets.TG_WEB_HOOK_NAME }}
         CASERVER: ${{ secrets.CASERVER}}
         BAKENEKO_HOST: ${{ secrets.BAKENEKO_HOST }}
         GIT_BRANCH: ${{ secrets.GIT_BRANCH }}
       with:
-        envs: POSTGRES_USER,POSTGRES_PASSWORD,POSTGRES_DB,POSTGRES_PORT,TG_TOKEN,CASERVER,BAKENEKO_HOST,GIT_BRANCH
+        envs: POSTGRES_USER,POSTGRES_PASSWORD,POSTGRES_DB,POSTGRES_PORT,TG_TOKEN,TG_WEB_HOOK_NAME,CASERVER,BAKENEKO_HOST,GIT_BRANCH
         host: ${{ secrets.SSH_HOST_IP }}
         username: ${{ secrets.SSH_USERNAME }}
         password: ${{ secrets.SSH_PASSWORD }}
@@ -30,6 +31,7 @@ jobs:
           echo POSTGRES_DB=$POSTGRES_DB >> bakeneko/.env
           echo POSTGRES_PORT=$POSTGRES_PORT >> bakeneko/.env
           echo TG_TOKEN=$TG_TOKEN >> bakeneko/.env
+          echo TG_WEB_HOOK_NAME=$TG_WEB_HOOK_NAME >> bakeneko/.env
           echo CASERVER=$CASERVER >> bakeneko/.env
           echo BAKENEKO_HOST=$BAKENEKO_HOST >> bakeneko/.env
           cd bakeneko/
