@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Request
 
 from bakeneko.bot import handle_update
+from bakeneko.config import settings
 
-router = APIRouter(prefix="/secretwebhook", tags=["webhook"])
+router = APIRouter(prefix=f"/{settings.TG_WEB_HOOK_NAME}", tags=["webhook"])
 
 
 @router.post("/")
