@@ -12,7 +12,8 @@
     <script type="text/javascript">
     Telegram.WebApp.ready();
     Telegram.WebApp.MainButton.setText('Choose Color').show().onClick(function () {
-        Telegram.WebApp.sendData({"data": "ok"});
+        const data = "from tg"
+        Telegram.WebApp.sendData(data);
         Telegram.WebApp.close();
     });
     </script>
