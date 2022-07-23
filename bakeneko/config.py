@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     POSTGRES_PORT: str = Field(..., env="POSTGRES_PORT")
     TG_TOKEN: str = Field(..., env="TG_TOKEN")
     TG_WEB_HOOK_NAME: str = Field(..., env="TG_WEB_HOOK_NAME")
+    TG_WEB_APP_MENU: str = Field("menu")
     BAKENEKO_HOST: str = Field(..., env="BAKENEKO_HOST")
 
     @property
@@ -21,6 +22,10 @@ class Settings(BaseSettings):
     @property
     def web_hook_url(self):
         return f"https://{self.BAKENEKO_HOST}/{self.TG_WEB_HOOK_NAME}/"
+
+    @property
+    def web_app_menu_url(self):
+        return f"https://{self.BAKENEKO_HOST}/{self.TG_WEB_APP_MENU}/"
 
 
 settings = Settings()  # type: ignore

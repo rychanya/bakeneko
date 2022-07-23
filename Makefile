@@ -5,7 +5,7 @@ prety:
 	poetry run isort .
 	poetry run black .
 serv:
-	docker compose up -d --build
+	docker compose up --build
 test-start:
 	BAKENEKO_TARGET=dev docker compose up -d --build
 	docker wait bakeneko-web
