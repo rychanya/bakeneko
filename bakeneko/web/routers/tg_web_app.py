@@ -12,3 +12,8 @@ templates = Jinja2Templates(directory="/code/bakeneko/templates")
 @router.get("/", response_class=HTMLResponse)
 def root(request: Request):
     return templates.TemplateResponse(name="index.jinja", context={"request": request})
+
+@router.post("/")
+async def root_post(request: Request):
+    print(await request.json())
+    return "ok"
