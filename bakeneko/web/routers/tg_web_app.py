@@ -54,12 +54,10 @@ class CheckInitData:
     ) -> None:
         if hash is None or auth_date is None or query_id is None or user is None:
             raise self._error
-        init_data = cast(
-            filter[str],
-            filter(
-                lambda v: v is not None, [auth_date, query_id, user, can_send_after]
-            ),
+        init_data = list(
+            filter(lambda v: v is not None, [auth_date, query_id, user, can_send_after])
         )
+        init_data = cast(list[str], init_data)
         data_check_string = "\n".join(sorted(init_data))
         secret_key = hmac.new(
             "WebAppData".encode(), settings.TG_TOKEN.encode(), hashlib.sha256
@@ -74,7 +72,9 @@ class CheckInitData:
         self.user = User.parse_raw(user)
 
 
-@router.post("/", )
+@router.post(
+    "/",
+)
 async def root_post(init_data: CheckInitData = Depends()):
     # user = request.query_params.get("user")
     # print(type(user), user)
