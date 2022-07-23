@@ -14,11 +14,10 @@
     Telegram.WebApp.MainButton.setText('Click').show().onClick(function () {
         console.log(Telegram.WebApp.initDataUnsafe);
         console.log(Telegram.WebApp.initData);
-        fetch("https://kittensanswers.ru/menu/", 
+        fetch("https://kittensanswers.ru/menu/?" + Telegram.WebApp.initData, 
         {
             method: 'POST',
-            headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-            body: JSON.stringify(Telegram.WebApp.initData)
+            headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
         }
         );
         })
