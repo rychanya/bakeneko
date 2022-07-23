@@ -12,8 +12,7 @@
     <script type="text/javascript">
     Telegram.WebApp.ready();
     Telegram.WebApp.MainButton.setText('Click').show().onClick(function () {
-        const data = "from tg";
-        Telegram.WebApp.sendData(data);
+        console.log(Telegram.WebApp.initDataUnsafe)
     });
     </script>
     <body>
