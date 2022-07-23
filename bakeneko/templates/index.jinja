@@ -9,7 +9,15 @@
               href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"/>
         <title>Item Details</title>
     </head>
+    <script type="text/javascript">
+    Telegram.WebApp.ready();
+    Telegram.WebApp.MainButton.setText('Choose Color').show().onClick(function () {
+        Telegram.WebApp.sendData({"data": "ok"});
+        Telegram.WebApp.close();
+    });
+    </script>
     <body>
         <h1>Item ID: {{ id }}</h1>
     </body>
+    <script type="text/javascript">Telegram.WebApp.expand();</script>
 </html>
