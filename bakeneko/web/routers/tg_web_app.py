@@ -1,7 +1,7 @@
 import hashlib
 import hmac
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
@@ -16,10 +16,7 @@ templates = Jinja2Templates(directory="/code/bakeneko/templates")
 def root(request: Request):
     return templates.TemplateResponse(name="index.jinja", context={"request": request})
 
-
-@router.post("/")
-async def root_post(request: Request):
-    json = request.query_params
+def check_init_data(request: Request)->None:
     data_check_string = "\n".join(
         [
             f"{k}={request.query_params[k]}"
@@ -27,12 +24,18 @@ async def root_post(request: Request):
             if k != "hash"
         ]
     )
-    secret_key = hmac.new("WebAppData".encode(), settings.TG_TOKEN.encode(), hashlib.sha256).digest()
-    data_check = hmac.new(secret_key, data_check_string.encode(), hashlib.sha256).hexdigest()
-    for k, v in json.items():
-        print(f"{k} - {v}")
-    print(data_check_string)
-    print(secret_key)
-    print(data_check)
-    print(secret_key == json["hash"])
+    secret_key = hmac.new(
+        "WebAppData".encode(), settings.TG_TOKEN.encode(), hashlib.sha256
+    ).digest()
+    data_check = hmac.new(
+        secret_key, data_check_string.encode(), hashlib.sha256
+    ).hexdigest()
+    if data_check != request.query_params.get("hash"):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="init data invalid")
+
+
+@router.post("/", dependencies=[Depends(check_init_data)])
+async def root_post(request: Request):
+    user = request.query_params.get("user")
+    print(type(user), user)
     return "ok"
