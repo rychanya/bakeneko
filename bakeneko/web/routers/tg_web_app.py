@@ -1,12 +1,13 @@
 import hashlib
 import hmac
-from typing import cast
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from pydantic import ValidationError
+from telegram import InlineQueryResultArticle, InputTextMessageContent
 
+from bakeneko.bot import bot
 from bakeneko.bot.models import User
 from bakeneko.config import settings
 
@@ -18,26 +19,6 @@ templates = Jinja2Templates(directory="/code/bakeneko/templates")
 @router.get("/", response_class=HTMLResponse)
 def root(request: Request):
     return templates.TemplateResponse(name="index.jinja", context={"request": request})
-
-
-def check_init_data(request: Request) -> None:
-    data_check_string = "\n".join(
-        [
-            f"{k}={request.query_params[k]}"
-            for k in sorted(request.query_params.keys())
-            if k != "hash"
-        ]
-    )
-    secret_key = hmac.new(
-        "WebAppData".encode(), settings.TG_TOKEN.encode(), hashlib.sha256
-    ).digest()
-    data_check = hmac.new(
-        secret_key, data_check_string.encode(), hashlib.sha256
-    ).hexdigest()
-    if data_check != request.query_params.get("hash"):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="init data invalid"
-        )
 
 
 class CheckInitData:
@@ -85,7 +66,13 @@ class CheckInitData:
     "/",
 )
 async def root_post(init_data: CheckInitData = Depends()):
-    # user = request.query_params.get("user")
-    # print(type(user), user)
-    print(init_data.query_id, init_data.user)
+    await bot.answer_web_app_query(
+        init_data.query_id,
+        InlineQueryResultArticle(
+            id="1",
+            title="title",
+            description="des",
+            input_message_content=InputTextMessageContent(message_text="text"),
+        ),
+    )
     return "ok"
