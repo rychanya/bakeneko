@@ -4,7 +4,7 @@ from fastapi.templating import Jinja2Templates
 
 from bakeneko.config import settings
 
-router = APIRouter(prefix=f"/{settings.TG_WEB_HOOK_NAME}")
+router = APIRouter(prefix=f"/{settings.TG_WEB_APP_MENU}")
 
 templates = Jinja2Templates(directory="/code/bakeneko/templates")
 
