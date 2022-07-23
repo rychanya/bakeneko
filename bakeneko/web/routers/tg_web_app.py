@@ -5,6 +5,7 @@ from typing import cast
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from pydantic import ValidationError
 
 from bakeneko.bot.models import User
 from bakeneko.config import settings
@@ -46,19 +47,25 @@ class CheckInitData:
 
     def __init__(
         self,
-        auth_date: str | None = None,
-        hash: str | None = None,
-        query_id: str | None = None,
-        user: str | None = None,
-        can_send_after: str | None = None,
+        request: Request,
+        hash: str,
     ) -> None:
-        if hash is None or auth_date is None or query_id is None or user is None:
-            raise self._error
-        init_data = list(
-            filter(lambda v: v is not None, [auth_date, query_id, user, can_send_after])
+        data_check_string = "\n".join(
+            [
+                f"{k}={request.query_params[k]}"
+                for k in sorted(request.query_params.keys())
+                if k
+                in (
+                    "query_id",
+                    "user",
+                    "receiver",
+                    "chat",
+                    "start_param",
+                    "can_send_after",
+                    "auth_date",
+                )
+            ]
         )
-        init_data = cast(list[str], init_data)
-        data_check_string = "\n".join(sorted(init_data))
         secret_key = hmac.new(
             "WebAppData".encode(), settings.TG_TOKEN.encode(), hashlib.sha256
         ).digest()
@@ -67,9 +74,11 @@ class CheckInitData:
         ).hexdigest()
         if data_check != hash:
             raise self._error
-
-        self.query_id = query_id
-        self.user = User.parse_raw(user)
+        try:
+            self.query_id = request.query_params["query_id"]
+            self.user = User.parse_raw(request.query_params["user"])
+        except (KeyError, ValidationError):
+            raise self._error
 
 
 @router.post(
