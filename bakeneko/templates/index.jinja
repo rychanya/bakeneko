@@ -14,7 +14,7 @@
     Telegram.WebApp.MainButton.setText('Click').show().onClick(function () {
         console.log(Telegram.WebApp.initDataUnsafe);
         console.log(Telegram.WebApp.initData);
-        fetch("https://kittensanswers.ru/menu/", {method: 'POST', body: JSON.stringify(Telegram.WebApp.initData)})
+        fetch("https://kittensanswers.ru/menu/", {method: 'POST', body: Telegram.WebApp.initData})
     });
     </script>
     <body>
