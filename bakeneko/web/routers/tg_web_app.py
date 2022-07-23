@@ -15,6 +15,7 @@ def root(request: Request):
 
 @router.post("/")
 async def root_post(request: Request):
-    json = await request.json()
-    print(type(json), json)
+    json = request.query_params
+    for k, v in json.items():
+        print(f"{k} - {v}")
     return "ok"
