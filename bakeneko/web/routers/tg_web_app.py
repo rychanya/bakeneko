@@ -15,6 +15,6 @@ def root(request: Request):
 
 @router.post("/")
 async def root_post(request: Request):
-    json = await request.json()
+    json = await request.body()
     print(type(json), json)
     return "ok"
