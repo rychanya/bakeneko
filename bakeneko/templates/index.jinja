@@ -9,19 +9,7 @@
               href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"/>
         <title>Item Details</title>
     </head>
-    <script type="text/javascript">
-    Telegram.WebApp.ready();
-    Telegram.WebApp.MainButton.setText('Click').show().onClick(function () {
-        console.log(Telegram.WebApp.initDataUnsafe);
-        console.log(Telegram.WebApp.initData);
-        fetch("https://kittensanswers.ru/menu/?" + Telegram.WebApp.initData, 
-        {
-            method: 'POST',
-            headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
-        }
-        );
-        })
-    </script>
+    <script type="text/javascript" src={{ url_for('static', path='/js/webmenu.js') }}></script>
     <body>
         <h1>Item ID: {{ id }}</h1>
     </body>
