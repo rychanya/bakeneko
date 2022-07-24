@@ -67,12 +67,15 @@ class CheckInitData:
 )
 async def root_post(init_data: CheckInitData = Depends()):
     await bot.answer_web_app_query(
-        init_data.query_id,
-        InlineQueryResultArticle(
+        web_app_query_id=init_data.query_id,
+        result=InlineQueryResultArticle(
             id="1",
             title="title",
             description="des",
-            input_message_content=InputTextMessageContent(message_text="text"),
+            input_message_content=InputTextMessageContent(
+                message_text="text", parse_mode=None, disable_web_page_preview=False
+            ),
         ),
     )
+
     return "ok"
