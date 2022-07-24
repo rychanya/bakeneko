@@ -12,4 +12,4 @@ Telegram.WebApp.MainButton.setText('Click').show().onClick(function () {
             Telegram.WebApp.close()
         }
     })
-})
+});
