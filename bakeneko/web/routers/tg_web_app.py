@@ -1,10 +1,12 @@
 import hashlib
 import hmac
+from urllib.parse import urlparse, urlunparse
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from pydantic import ValidationError
+from starlette.datastructures import URL
 from telegram import InlineQueryResultArticle, InputTextMessageContent
 
 from bakeneko.bot import bot
@@ -15,15 +17,24 @@ router = APIRouter(prefix=f"/{settings.TG_WEB_APP_MENU}")
 
 templates = Jinja2Templates(directory="/code/bakeneko/templates")
 
+def https(value: str|URL):
+    print(type(value))
+    if isinstance(value, URL):
+        value = str(value)
+    parts = urlparse(value)
+    return urlunparse(["https", *parts[1:]])
+    
+templates.env.filters["https"] = https
 
 @router.get("/", response_class=HTMLResponse)
 def root(request: Request):
     print(request.base_url)
+    og_title = "og title"
     description = "\n".join([
     "🔴 Wrong",
     "🟢 Correct CorrectCorrectCorrectCorrectCorrectCorrectCorrectCorrect CorrectCorrectCorrectCorrect CorrectCorrectCorrectCorrect CorrectCorrectCorrectCorrect Correct",
     "⚪ Long"])
-    return templates.TemplateResponse(name="index.jinja", context={"request": request, "description": description})
+    return templates.TemplateResponse(name="index.jinja", context={"request": request, "og_description": description, "og_title": og_title})
 
 
 class CheckInitData:
@@ -83,4 +94,5 @@ async def root_post(init_data: CheckInitData = Depends()):
         ),
     )
 
+    return "ok"
     return "ok"

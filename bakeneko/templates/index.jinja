@@ -4,12 +4,12 @@
         <meta charset="utf-8"/>
         <meta name="description" content=""/>
         <meta name="keywords" content=""/>
-        <meta property="og:title" content="Мэрилин Монро"/>
-        <meta property="og:description" content="{{ description }}"/>
+        <meta property="og:title" content="{{ og_title }}"/>
+        <meta property="og:description" content="{{ og_description }}"/>
         <meta property="og:image"
-              content="//static/wizard.jpg"/>
+              content="{{ url_for('static', path='wizard.jpg')|https }}"/>
         <meta property="og:type" content="website"/>
-        <meta property="og:url" content="{{ request.url }}"/>
+        <meta property="og:url" content="{{ request.url|https }}"/>
         <script src="https://telegram.org/js/telegram-web-app.js"></script>
         <link rel="stylesheet"
               href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"/>
@@ -17,7 +17,8 @@
     </head>
     <script type="text/javascript" src="/static/js/webmenu.js"></script>
     <body>
-        <h1>Item ID: {{ id }}</h1>
+        <h1> {{ og_title }}</h1>
+        <p> {{ og_description }}</p>
     </body>
     <script type="text/javascript">Telegram.WebApp.expand();</script>
 </html>
