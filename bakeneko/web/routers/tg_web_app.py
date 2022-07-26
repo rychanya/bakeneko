@@ -18,6 +18,7 @@ templates = Jinja2Templates(directory="/code/bakeneko/templates")
 
 @router.get("/", response_class=HTMLResponse)
 def root(request: Request):
+    print(request.base_url)
     description = "\n".join([
     "🔴 Wrong",
     "🟢 Correct CorrectCorrectCorrectCorrectCorrectCorrectCorrectCorrect CorrectCorrectCorrectCorrect CorrectCorrectCorrectCorrect CorrectCorrectCorrectCorrect Correct",
