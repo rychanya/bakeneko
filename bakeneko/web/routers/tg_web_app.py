@@ -18,7 +18,12 @@ templates = Jinja2Templates(directory="/code/bakeneko/templates")
 
 @router.get("/", response_class=HTMLResponse)
 def root(request: Request):
-    return templates.TemplateResponse(name="index.jinja", context={"request": request})
+    description = """
+    🔴 Wrong
+    🟢 Correct CorrectCorrectCorrectCorrectCorrectCorrectCorrectCorrect CorrectCorrectCorrectCorrect CorrectCorrectCorrectCorrect CorrectCorrectCorrectCorrect Correct
+    ⚪ Long
+    """
+    return templates.TemplateResponse(name="index.jinja", context={"request": request, "description": description})
 
 
 class CheckInitData:
