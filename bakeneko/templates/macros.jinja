@@ -1,0 +1,12 @@
+{% macro render_answer(text, is_correct) %}
+    <p>
+        {% if is_correct is true %}
+            🟢
+        {% elif is_correct is false %}
+            🔴
+        {% else %}
+            ⚪
+        {% endif %}
+        {{ text }}
+    </p>
+{% endmacro %}
