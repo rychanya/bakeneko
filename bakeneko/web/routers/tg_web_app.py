@@ -12,7 +12,6 @@ router = APIRouter(prefix=f"/{settings.TG_WEB_APP_MENU}")
 
 @router.get("/", response_class=HTMLResponse)
 def root(request: Request):
-    print(request.base_url)
     og_title = "og title"
     description = "\n".join(
         [
@@ -21,12 +20,42 @@ def root(request: Request):
             "⚪ Long",
         ]
     )
+    qas = [
+        {
+            "title": "what?",
+            "type": "only one",
+            "answers": [
+                {"text": "correct", "is_correct": True},
+                {"text": "incorrect", "is_correct": False},
+                {"text": "normal", "is_correct": None},
+            ],
+        },
+        {
+            "title": "what?",
+            "type": "only one",
+            "answers": [
+                {"text": "correct", "is_correct": True},
+                {"text": "incorrect", "is_correct": False},
+                {"text": "normal", "is_correct": None},
+            ],
+        },
+        {
+            "title": "what?",
+            "type": "only one",
+            "answers": [
+                {"text": "correct", "is_correct": True},
+                {"text": "incorrect", "is_correct": False},
+                {"text": "normal", "is_correct": None},
+            ],
+        },
+    ]
     return templates.TemplateResponse(
         name="index.jinja",
         context={
             "request": request,
             "og_description": description,
             "og_title": og_title,
+            "qas": qas,
         },
     )
 

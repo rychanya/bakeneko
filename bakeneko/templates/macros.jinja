@@ -1,12 +1,22 @@
-{% macro render_answer(text, is_correct) %}
-    <p>
-        {% if is_correct is true %}
-            🟢
-        {% elif is_correct is false %}
-            🔴
-        {% else %}
-            ⚪
-        {% endif %}
-        {{ text }}
-    </p>
+{% macro render_qa(qa) %}
+    <h1>{{ qa.title }}</h1>
+    <p>{{ qa.type }}</p>
+    {% for answer in qa.answers %}
+        <p>
+            {% if answer.is_correct is true %}
+                🟢
+            {% elif answer.is_correct is false %}
+                🔴
+            {% else %}
+                ⚪
+            {% endif %}
+            {{ answer.text }}
+        </p>
+    {% endfor %}
+{% endmacro %}
+{% macro render_qas(qas) %}
+    {% for qa in qas %}
+        {{ render_qa(qa) }}
+        {% if not loop.last %}<hr/>{% endif %}
+    {% endfor %}
 {% endmacro %}

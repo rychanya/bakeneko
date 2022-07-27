@@ -7,7 +7,6 @@ templates = Jinja2Templates(directory="bakeneko/templates")
 
 
 def https(value: str | URL):
-    print(type(value))
     if isinstance(value, URL):
         value = str(value)
     parts = urlparse(value)
