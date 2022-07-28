@@ -12,3 +12,33 @@ window.Telegram.WebApp.MainButton.setText('Click').show().onClick(() => {
     }
   });
 });
+
+function createQA(qa, index, qas) {
+  const result = document.getElementById('result');
+  const qaDiv = document.createElement('div');
+  const header = document.createElement('h1');
+  header.innerText = qa.title;
+  qaDiv.appendChild(header);
+  const type = document.createElement('p');
+  type.innerText = qa.type;
+  qaDiv.appendChild(type);
+  qa.answers.forEach((answer) => {
+    const answerP = document.createElement('p');
+    answerP.innerText = answer;
+    qaDiv.appendChild(answerP);
+  });
+  if (index + 1 !== qas.length) {
+    qaDiv.appendChild(document.createElement('hr'));
+  }
+  result.appendChild(qaDiv);
+}
+
+function search(event) {
+  const result = document.getElementById('result');
+  result.innerHTML = '';
+  event.preventDefault();
+  const qas = [{ title: 'test', type: 'type', answers: ['jujjj', 'jjjj'] }, { title: 'test', type: 'type', answers: ['jujjj', 'jjjj'] }];
+  qas.forEach(createQA);
+}
+
+document.getElementById('search').addEventListener('click', search);

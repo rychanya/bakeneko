@@ -9,15 +9,15 @@
         <script src="https://telegram.org/js/telegram-web-app.js"></script>
         <link rel="stylesheet"
               href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css"/>
-        <script type="text/javascript" src="{{ url_for('static', path='js/webmenu.js')|https }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <title>Item Details</title>
     </head>
     <body>
-        {{ fname }}
-        <form action="/menu" method="get">
-            <input type="text" id="fname" name="fname" value="John"/>
-            <input type="submit" value="Submit"/>
+        <form>
+            <input type="text" id="q"/>
+            <button id="search">?</button>
         </form>
-        {{ macros.render_qas(qas) }}
+        <div id="result">hhh</div>
+        <script type="text/javascript" src="{{ url_for('static', path='js/webmenu.js')|https }}"></script>
     </body>
 </html>
