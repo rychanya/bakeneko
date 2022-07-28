@@ -1,7 +1,12 @@
 from fastapi import APIRouter, Depends, Query, Request
 from fastapi.responses import HTMLResponse, JSONResponse
 from pydantic import BaseModel
-from telegram import InlineQueryResultArticle, InputTextMessageContent
+from telegram import (
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    InlineQueryResultArticle,
+    InputTextMessageContent,
+)
 
 from bakeneko.bot import bot
 from bakeneko.config import settings
@@ -78,6 +83,7 @@ async def root_post(qaid: QAID, init_data: CheckInitData = Depends()):
             input_message_content=InputTextMessageContent(
                 message_text=qaid.id, parse_mode=None, disable_web_page_preview=False
             ),
+            reply_markup=InlineKeyboardMarkup.from_button(InlineKeyboardButton(text="Share", switch_inline_query=qaid.id))
         ),
     )
 
