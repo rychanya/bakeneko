@@ -17,6 +17,7 @@ loguru = "^0.6.0"
 python-telegram-bot = "20.0a2"
 python-dotenv = "^0.20.0"
 Jinja2 = "^3.1.2"
+python-multipart = "^0.0.5"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"
