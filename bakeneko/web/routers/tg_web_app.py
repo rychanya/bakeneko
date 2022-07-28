@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, Query, Request
 from fastapi.responses import HTMLResponse, JSONResponse
+from pydantic import BaseModel
 from telegram import InlineQueryResultArticle, InputTextMessageContent
 
 from bakeneko.bot import bot
@@ -61,11 +62,13 @@ def root(request: Request, fname: str = Query("")):
         },
     )
 
+class QAID(BaseModel):
+    id: str
 
 @router.post(
     "/",
 )
-async def root_post(init_data: CheckInitData = Depends()):
+async def root_post(qaid: QAID, init_data: CheckInitData = Depends()):
     await bot.answer_web_app_query(
         web_app_query_id=init_data.query_id,
         result=InlineQueryResultArticle(
@@ -73,7 +76,7 @@ async def root_post(init_data: CheckInitData = Depends()):
             title="title",
             description="des",
             input_message_content=InputTextMessageContent(
-                message_text="text", parse_mode=None, disable_web_page_preview=False
+                message_text=qaid.id, parse_mode=None, disable_web_page_preview=False
             ),
         ),
     )
@@ -85,7 +88,7 @@ async def root_post(init_data: CheckInitData = Depends()):
 def json():
     return JSONResponse(
         [
-            {"title": "test", "type": "type", "answers": ["jujjj", "jjjj"]},
-            {"title": "test", "type": "type", "answers": ["jujjj", "jjjj"]},
+            {"id": "1", "title": "test", "type": "type", "answers": ["jujjj", "jjjj"]},
+            {"id": "2", "title": "test", "type": "type", "answers": ["jujjj", "jjjj"]},
         ]
     )
