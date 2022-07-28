@@ -28,13 +28,18 @@ async def handle_update(update_row: dict):
     update = Update.parse_obj(update_row)
     print(update)
     if update.inline_query:
-        await bot.answer_inline_query(
-            inline_query_id=update.inline_query.id,
-            results=[
-                InlineQueryResultArticle(
-                    id=update.inline_query.query,
-                    title="Paste",
-                    input_message_content=InputTextMessageContent(message_text=" ", parse_mode=None, disable_web_page_preview=False),
-                )
-            ],
-        )
+        if update.inline_query.query:
+            await bot.answer_inline_query(
+                inline_query_id=update.inline_query.id,
+                results=[
+                    InlineQueryResultArticle(
+                        id=update.inline_query.query,
+                        title="Paste",
+                        input_message_content=InputTextMessageContent(
+                            message_text="mt",
+                            parse_mode=None,
+                            disable_web_page_preview=False,
+                        ),
+                    )
+                ],
+            )
