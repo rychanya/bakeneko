@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, Query, Request
 from fastapi.responses import HTMLResponse
 from telegram import InlineQueryResultArticle, InputTextMessageContent
 
@@ -11,7 +11,8 @@ router = APIRouter(prefix=f"/{settings.TG_WEB_APP_MENU}")
 
 
 @router.get("/", response_class=HTMLResponse)
-def root(request: Request):
+def root(request: Request, fname: str = Query("")):
+    print(fname)
     og_title = "og title"
     description = "\n".join(
         [
@@ -56,6 +57,7 @@ def root(request: Request):
             "og_description": description,
             "og_title": og_title,
             "qas": qas,
+            "fname": fname
         },
     )
 
