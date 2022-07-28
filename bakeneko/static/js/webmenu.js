@@ -37,8 +37,9 @@ function search(event) {
   const result = document.getElementById('result');
   result.innerHTML = '';
   event.preventDefault();
-  const qas = [{ title: 'test', type: 'type', answers: ['jujjj', 'jjjj'] }, { title: 'test', type: 'type', answers: ['jujjj', 'jjjj'] }];
-  qas.forEach(createQA);
+  axios.get('/menu/json/').then((resp) => {
+    resp.data.forEach(createQA);
+  });
 }
 
 document.getElementById('search').addEventListener('click', search);

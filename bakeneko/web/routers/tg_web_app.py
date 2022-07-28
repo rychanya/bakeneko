@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, Query, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from telegram import InlineQueryResultArticle, InputTextMessageContent
 
 from bakeneko.bot import bot
@@ -57,7 +57,7 @@ def root(request: Request, fname: str = Query("")):
             "og_description": description,
             "og_title": og_title,
             "qas": qas,
-            "fname": fname
+            "fname": fname,
         },
     )
 
@@ -79,3 +79,13 @@ async def root_post(init_data: CheckInitData = Depends()):
     )
 
     return "ok"
+
+
+@router.get("/json/")
+def json():
+    return JSONResponse(
+        [
+            {"title": "test", "type": "type", "answers": ["jujjj", "jjjj"]},
+            {"title": "test", "type": "type", "answers": ["jujjj", "jjjj"]},
+        ]
+    )
