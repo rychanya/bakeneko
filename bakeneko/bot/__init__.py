@@ -2,6 +2,8 @@ from pprint import pprint
 
 from telegram import (
     Bot,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
     InlineQueryResultArticle,
     InputTextMessageContent,
     MenuButtonWebApp,
@@ -39,6 +41,11 @@ async def handle_update(update_row: dict):
                             message_text="mt",
                             parse_mode=None,
                             disable_web_page_preview=False,
+                        ),
+                        reply_markup=InlineKeyboardMarkup.from_button(
+                            InlineKeyboardButton(
+                                text="Share", switch_inline_query=update.inline_query.query
+                            )
                         ),
                     )
                 ],
