@@ -1,7 +1,4 @@
 window.Telegram.WebApp.ready();
-window.Telegram.WebApp.MainButton.setText('Click').show().onClick(() => {
-
-});
 
 function createQA(qa, index, qas) {
   const result = document.getElementById('result');
