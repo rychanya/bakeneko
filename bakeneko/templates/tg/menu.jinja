@@ -3,9 +3,19 @@
     TG Web Menu
 {% endblock title %}
 {% block body %}
+    <script type='text/javascript'>
+        document.body.addEventListener("closeMenu", function(){
+            window.Telegram.WebApp.close();
+        })
+    </script>
     <form>
         <input type="text" id="q" name="q" value="q text"/>
-        <button id="search" hx-post="/tg-web-app/search/" hx-target="#result" hx-vals='js:{init: window.Telegram.WebApp.initData}'>?</button>
+        <button id="search"
+                hx-post="/tg-web-app/search/"
+                hx-target="#result"
+                hx-vals='js:{init: window.Telegram.WebApp.initData}'>
+            ?
+        </button>
     </form>
     <div id="result"></div>
 {% endblock body %}

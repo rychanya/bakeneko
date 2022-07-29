@@ -1,0 +1,10 @@
+{% import 'macros.jinja' as macros %}
+{% for qa in qas %}
+    {{ macros.render_qa(qa) }}
+    <button hx-post="/tg-web-app/select/"
+            hx-swap='none'
+            hx-vals='js:{init: window.Telegram.WebApp.initData}'>
+        select
+    </button>
+    {% if not loop.last %}<hr/>{% endif %}
+{% endfor %}
