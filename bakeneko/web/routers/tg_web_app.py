@@ -17,6 +17,7 @@ class RouterNames(str, Enum):
     MENU = "menu"
     SEARCH = "search"
     SELECT = "select"
+    ANSWER = "answer"
 
 
 @router.get("/menu/", response_class=HTMLResponse, name=RouterNames.MENU)
@@ -51,6 +52,30 @@ async def search(request: Request, q: str = Form()):
 async def select(
     response: Response, init_data: CheckInitData = Depends(), id: str = Form()
 ):
-    await select_answer_in_webapp(init_data=init_data, answer_id=id)
+    answer_url = settings.get_abs_url(
+        router.url_path_for(RouterNames.ANSWER, answer_id=id)
+    )
+    await select_answer_in_webapp(
+        init_data=init_data, answer_id=id, answer_url=answer_url
+    )
     response.headers["HX-Trigger"] = "closeMenu"
     return "ok"
+
+
+@router.get("/answer/{answer_id}/", name=RouterNames.ANSWER)
+async def get_answer(request: Request, answer_id: str):
+    qa = {
+        "id": answer_id,
+        "title": "title",
+        "type": "type",
+        "answers": ["1", "2", "3"],
+    }
+    return templates.TemplateResponse(
+        name="tg/answer.jinja",
+        context={
+            "request": request,
+            "qa": qa,
+            "og_title": qa["title"],
+            "og_description": "\n".join(qa["answers"]),
+        },
+    )

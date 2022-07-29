@@ -1,5 +1,3 @@
-from pprint import pprint
-
 from telegram import (
     Bot,
     InlineKeyboardButton,
@@ -17,7 +15,6 @@ from bakeneko.web.dependencies import CheckInitData
 bot = Bot(settings.TG_TOKEN)
 
 
-
 async def init_bot(web_hook_url: str, web_app_menu_url: str):
     await bot.set_webhook(web_hook_url)
     await bot.set_chat_menu_button(
@@ -28,9 +25,7 @@ async def init_bot(web_hook_url: str, web_app_menu_url: str):
 
 
 async def handle_update(update_row: dict):
-    pprint(update_row)
     update = Update.parse_obj(update_row)
-    print(update)
     if update.inline_query:
         if update.inline_query.query:
             await bot.answer_inline_query(
@@ -55,14 +50,16 @@ async def handle_update(update_row: dict):
             )
 
 
-async def select_answer_in_webapp(init_data: CheckInitData, answer_id: str):
+async def select_answer_in_webapp(
+    init_data: CheckInitData, answer_id: str, answer_url: str
+):
     await bot.answer_web_app_query(
         web_app_query_id=init_data.query_id,
         result=InlineQueryResultArticle(
             id=answer_id,
             title="title",
             input_message_content=InputTextMessageContent(
-                message_text=answer_id,
+                message_text=answer_url,
                 parse_mode=None,
                 disable_web_page_preview=False,
             ),
