@@ -38,4 +38,4 @@ def root(request: Request):
 
 @router.post("/search/", name=RouterNames.SEARCH)
 async def root_post(q: str = Form(), init: CheckInitData = Depends()):
-    return f"{q}  {init.query_id}"
+    return f"{init.query_id} {init.user}"
