@@ -3,14 +3,13 @@ from enum import Enum
 from fastapi import APIRouter, Depends, Form, Request, Response
 from fastapi.responses import HTMLResponse
 
+from bakeneko import store
 from bakeneko.bot import select_answer_in_webapp
 from bakeneko.config import settings
 from bakeneko.templates import templates
 from bakeneko.web.dependencies import CheckInitData
 
 router = APIRouter(prefix=f"/{settings.TG_WEB_APP_BASE}")
-
-emoji_dict = {True: "🟢", False: "🔴", None: "⚪"}
 
 
 class RouterNames(str, Enum):
@@ -34,17 +33,7 @@ def menu(request: Request):
 async def search(request: Request, q: str = Form()):
     return templates.TemplateResponse(
         name="tg/answers.jinja",
-        context={
-            "request": request,
-            "qas": [
-                {
-                    "id": "1",
-                    "title": "title",
-                    "type": "type",
-                    "answers": ["1", "2", "3"],
-                }
-            ],
-        },
+        context={"request": request, "qas": await store.search(q)},
     )
 
 
@@ -64,12 +53,7 @@ async def select(
 
 @router.get("/answer/{answer_id}/", name=RouterNames.ANSWER)
 async def get_answer(request: Request, answer_id: str):
-    qa = {
-        "id": answer_id,
-        "title": "title",
-        "type": "type",
-        "answers": ["1", "2", "3"],
-    }
+    qa = await store.get_answer_by_id(answer_id)
     return templates.TemplateResponse(
         name="tg/answer.jinja",
         context={

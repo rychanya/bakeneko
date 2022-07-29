@@ -35,15 +35,9 @@ async def handle_update(update_row: dict):
                         id=update.inline_query.query,
                         title="Paste",
                         input_message_content=InputTextMessageContent(
-                            message_text="mt",
+                            message_text=update.inline_query.query,
                             parse_mode=None,
                             disable_web_page_preview=False,
-                        ),
-                        reply_markup=InlineKeyboardMarkup.from_button(
-                            InlineKeyboardButton(
-                                text="Share",
-                                switch_inline_query=update.inline_query.query,
-                            )
                         ),
                     )
                 ],
@@ -62,6 +56,9 @@ async def select_answer_in_webapp(
                 message_text=answer_url,
                 parse_mode=None,
                 disable_web_page_preview=False,
+            ),
+            reply_markup=InlineKeyboardMarkup.from_button(
+                InlineKeyboardButton(text="Share", switch_inline_query=answer_url)
             ),
         ),
     )
