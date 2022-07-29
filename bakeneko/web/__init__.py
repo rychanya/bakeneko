@@ -22,5 +22,7 @@ async def start_up():
     if settings.BAKENEKO_HOST != "localhost":
         await init_bot(
             web_hook_url=settings.get_abs_url(app.url_path_for(webhook.WEB_HOOK_NAME)),
-            web_app_menu_url=settings.get_abs_url(app.url_path_for(tg_web_app.RouterNames.MENU)),
+            web_app_menu_url=settings.get_abs_url(
+                app.url_path_for(tg_web_app.RouterNames.MENU)
+            ),
         )

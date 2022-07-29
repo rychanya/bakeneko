@@ -2,7 +2,7 @@ import hashlib
 import hmac
 from urllib.parse import parse_qsl
 
-from fastapi import Form, HTTPException, Request, status
+from fastapi import Form, HTTPException, status
 from pydantic import ValidationError
 
 from bakeneko.bot.models import User
@@ -16,27 +16,12 @@ class CheckInitData:
 
     def __init__(
         self,
-        # request: Request,
-        # hash: str,
-        init: str = Form()
+        init: str = Form(),
     ) -> None:
         init_dict = dict(parse_qsl(init))
         hash = init_dict.pop("hash", "")
         data_check_string = "\n".join(
-            [
-                f"{k}={init_dict[k]}"
-                for k in sorted(init_dict.keys())
-                # if k
-                # in (
-                #     "query_id",
-                #     "user",
-                #     "receiver",
-                #     "chat",
-                #     "start_param",
-                #     "can_send_after",
-                #     "auth_date",
-                # )
-            ]
+            [f"{k}={init_dict[k]}" for k in sorted(init_dict.keys())]
         )
         secret_key = hmac.new(
             "WebAppData".encode(), settings.TG_TOKEN.encode(), hashlib.sha256

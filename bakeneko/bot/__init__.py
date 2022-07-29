@@ -12,6 +12,7 @@ from telegram import (
 
 from bakeneko.bot.models import Update
 from bakeneko.config import settings
+from bakeneko.web.dependencies import CheckInitData
 
 bot = Bot(settings.TG_TOKEN)
 
@@ -51,3 +52,18 @@ async def handle_update(update_row: dict):
                     )
                 ],
             )
+
+
+async def select_answer_in_webapp(init_data: CheckInitData, answer_id: str):
+    await bot.answer_web_app_query(
+        web_app_query_id=init_data.query_id,
+        result=InlineQueryResultArticle(
+            id=answer_id,
+            title="title",
+            input_message_content=InputTextMessageContent(
+                message_text=answer_id,
+                parse_mode=None,
+                disable_web_page_preview=False,
+            ),
+        ),
+    )
