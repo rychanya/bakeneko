@@ -5,12 +5,7 @@
 {% block body %}
     <form>
         <input type="text" id="q" name="q" value="q text"/>
-        <button id="search" hx-post="/tg-web-app/search/" hx-target="#result">?</button>
+        <button id="search" hx-post="/tg-web-app/search/" hx-target="#result" hx-vals='js:{init: window.Telegram.WebApp.initData}'>?</button>
     </form>
     <div id="result"></div>
-    <script type="text/javascript">
-    document.body.addEventListener('htmx:configRequest', function(evt) {
-    evt.detail.target =  `${evt.detail.target}?${window.Telegram.WebApp.initData}`
-});
-    </script>
 {% endblock body %}
