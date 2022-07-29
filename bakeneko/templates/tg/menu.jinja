@@ -8,4 +8,9 @@
         <button id="search" hx-post="/tg-web-app/search/" hx-target="#result">?</button>
     </form>
     <div id="result"></div>
+    <script type="text/javascript">
+    document.body.addEventListener('htmx:configRequest', function(evt) {
+    evt.detail.target =  `${evt.detail.target}?${window.Telegram.WebApp.initData}`
+});
+    </script>
 {% endblock body %}

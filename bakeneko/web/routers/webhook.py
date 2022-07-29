@@ -13,7 +13,3 @@ async def webhook(request: Request):
     update = await request.json()
     await handle_update(update)
     return "ok"
-
-
-def get_webhook_url():
-    return router.url_path_for(WEB_HOOK_NAME)

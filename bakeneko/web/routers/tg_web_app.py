@@ -1,11 +1,12 @@
 from enum import Enum
 
-from fastapi import APIRouter, Form, Request
+from fastapi import APIRouter, Depends, Form, Request
 from fastapi.responses import HTMLResponse
 
 # from bakeneko.bot import bot
 from bakeneko.config import settings
 from bakeneko.templates import templates
+from bakeneko.web.dependencies import CheckInitData
 
 # from telegram import (
 #     InlineKeyboardButton,
@@ -14,7 +15,6 @@ from bakeneko.templates import templates
 #     InputTextMessageContent,
 # )
 
-# from bakeneko.web.dependencies import CheckInitData
 
 router = APIRouter(prefix=f"/{settings.TG_WEB_APP_BASE}")
 
@@ -36,10 +36,6 @@ def root(request: Request):
     )
 
 
-def get_menu_url():
-    return router.url_path_for(RouterNames.MENU)
-
-
 @router.post("/search/", name=RouterNames.SEARCH)
-async def root_post(q: str = Form()):
-    return q
+async def root_post(init_data: CheckInitData = Depends(), q: str = Form()):
+    return f"{q} {init_data.query_id}"
