@@ -16,11 +16,11 @@ from bakeneko.config import settings
 bot = Bot(settings.TG_TOKEN)
 
 
-async def init_bot():
-    await bot.set_webhook(settings.web_hook_url)
+async def init_bot(web_hook_url: str, web_app_menu_url: str):
+    await bot.set_webhook(web_hook_url)
     await bot.set_chat_menu_button(
         menu_button=MenuButtonWebApp(
-            text="Меню", web_app=WebAppInfo(url=settings.web_app_menu_url)
+            text="Меню", web_app=WebAppInfo(url=web_app_menu_url)
         )
     )
 
@@ -44,7 +44,8 @@ async def handle_update(update_row: dict):
                         ),
                         reply_markup=InlineKeyboardMarkup.from_button(
                             InlineKeyboardButton(
-                                text="Share", switch_inline_query=update.inline_query.query
+                                text="Share",
+                                switch_inline_query=update.inline_query.query,
                             )
                         ),
                     )

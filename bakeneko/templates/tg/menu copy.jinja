@@ -1,0 +1,12 @@
+{% extends "base.jinja" %}
+{% block title %}
+    TG Web Menu
+{% endblock title %}
+{% block body %}
+    <form>
+        <input type="text" id="q"/>
+        <button id="search">?</button>
+    </form>
+    <div id="result"></div>
+    <script type="text/javascript" src="{{ url_for('static', path='js/webmenu.js')|https }}"></script>
+{% endblock body %}

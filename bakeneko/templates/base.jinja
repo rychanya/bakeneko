@@ -1,4 +1,3 @@
-{% import "macros.jinja" as macros %}
 <!DOCTYPE html>
 <html lang="ru">
     <head>
@@ -9,15 +8,14 @@
         <script src="https://telegram.org/js/telegram-web-app.js"></script>
         <link rel="stylesheet"
               href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css"/>
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <title>Item Details</title>
+        <script src="https://unpkg.com/htmx.org@1.8.0" integrity="sha384-cZuAZ+ZbwkNRnrKi05G/fjBX+azI9DNOkNYysZ0I/X5ZFgsmMiBXgDZof30F5ofc" crossorigin="anonymous"></script>
+        <title>
+            {% block title %}
+            {% endblock title %}
+        </title>
     </head>
     <body>
-        <form>
-            <input type="text" id="q"/>
-            <button id="search">?</button>
-        </form>
-        <div id="result">hhh</div>
-        <script type="text/javascript" src="{{ url_for('static', path='js/webmenu.js')|https }}"></script>
+        {% block body %}
+        {% endblock body %}
     </body>
 </html>

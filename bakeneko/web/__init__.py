@@ -19,5 +19,10 @@ app.include_router(tg_web_app.router)
 async def start_up():
     wait_until_db_ready()
     Base.metadata.create_all(engine)
+    print(10 * "*")
+    print(webhook.get_webhook_url())
     if settings.BAKENEKO_HOST != "localhost":
-        await init_bot()
+        await init_bot(
+            web_hook_url=settings.get_abs_url(webhook.get_webhook_url()),
+            web_app_menu_url=settings.get_abs_url(tg_web_app.get_menu_url()),
+        )

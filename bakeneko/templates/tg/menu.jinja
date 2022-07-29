@@ -1,0 +1,11 @@
+{% extends "base.jinja" %}
+{% block title %}
+    TG Web Menu
+{% endblock title %}
+{% block body %}
+    <form>
+        <input type="text" id="q" name="q" value="q text"/>
+        <button id="search" hx-post="/tg-web-app/search/" hx-target="#result">?</button>
+    </form>
+    <div id="result"></div>
+{% endblock body %}

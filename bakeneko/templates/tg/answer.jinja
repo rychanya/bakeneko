@@ -1,0 +1,8 @@
+{% extends "base.jinja" %}
+{% block title %}
+    TG Answer
+{% endblock title %}
+{% block body %}
+    {% import 'macros.jinja' as macros %}
+    {{ macros.render_qa(qa) }}
+{% endblock body %}
