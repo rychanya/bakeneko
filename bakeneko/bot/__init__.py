@@ -17,6 +17,7 @@ from bakeneko.web.dependencies import CheckInitData
 bot = Bot(settings.TG_TOKEN)
 
 
+
 async def init_bot(web_hook_url: str, web_app_menu_url: str):
     await bot.set_webhook(web_hook_url)
     await bot.set_chat_menu_button(
