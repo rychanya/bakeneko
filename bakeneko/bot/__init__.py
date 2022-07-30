@@ -16,8 +16,7 @@ bot = Bot(settings.TG_TOKEN)
 
 
 async def init_bot(web_hook_url: str, web_app_menu_url: str):
-    is_web_hook_set = await bot.set_webhook(web_hook_url)
-    print(f"web hook set: {is_web_hook_set}")
+    await bot.set_webhook(web_hook_url)
     await bot.set_chat_menu_button(
         menu_button=MenuButtonWebApp(
             text="Меню", web_app=WebAppInfo(url=web_app_menu_url)
@@ -35,10 +34,17 @@ async def handle_update(update_row: dict):
                     InlineQueryResultArticle(
                         id=update.inline_query.query,
                         title="Paste",
+                        thumb_url=settings.get_abs_url("/static/wizard.jpg"),
                         input_message_content=InputTextMessageContent(
                             message_text=update.inline_query.query,
                             parse_mode=None,
                             disable_web_page_preview=False,
+                        ),
+                        reply_markup=InlineKeyboardMarkup.from_button(
+                            InlineKeyboardButton(
+                                "Open",
+                                web_app=WebAppInfo(url=update.inline_query.query),
+                            )
                         ),
                     )
                 ],
