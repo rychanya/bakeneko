@@ -16,7 +16,8 @@ bot = Bot(settings.TG_TOKEN)
 
 
 async def init_bot(web_hook_url: str, web_app_menu_url: str):
-    await bot.set_webhook(web_hook_url)
+    is_web_hook_set = await bot.set_webhook(web_hook_url)
+    print(f"web hook set: {is_web_hook_set}")
     await bot.set_chat_menu_button(
         menu_button=MenuButtonWebApp(
             text="Меню", web_app=WebAppInfo(url=web_app_menu_url)

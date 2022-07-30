@@ -3,7 +3,7 @@ from fastapi import APIRouter, Request
 from bakeneko.bot import handle_update
 from bakeneko.config import settings
 
-router = APIRouter(prefix=f"/{settings.TG_TOKEN}")
+router = APIRouter(prefix=f"/{settings.TG_WEB_HOOK_NAME}")
 
 WEB_HOOK_NAME = "tg-web-hook"
 
