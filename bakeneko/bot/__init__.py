@@ -40,12 +40,12 @@ async def handle_update(update_row: dict):
                             parse_mode=None,
                             disable_web_page_preview=False,
                         ),
-                        reply_markup=InlineKeyboardMarkup.from_button(
-                            InlineKeyboardButton(
-                                "Open",
-                                web_app=WebAppInfo(url=update.inline_query.query),
-                            )
-                        ),
+                        # reply_markup=InlineKeyboardMarkup.from_button(
+                        #     InlineKeyboardButton(
+                        #         "Open",
+                        #         web_app=WebAppInfo(url=update.inline_query.query),
+                        #     )
+                        # ),
                     )
                 ],
             )
