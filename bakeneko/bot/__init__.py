@@ -8,7 +8,13 @@ from telegram import (
     WebAppInfo,
 )
 
-from bakeneko.bot.models import CallBackAction, CallBackData, Update
+from bakeneko.bot.models import (
+    CallBackAction,
+    CallBackData,
+    CallbackQuery,
+    InlineQuery,
+    Update,
+)
 from bakeneko.config import settings
 from bakeneko.web.dependencies import CheckInitData
 
@@ -25,50 +31,57 @@ async def init_bot(web_hook_url: str, web_app_menu_url: str):
     )
 
 
+async def handle_update_inline_query(inline_query: InlineQuery):
+    if inline_query.query:
+        await bot.answer_inline_query(
+            inline_query_id=inline_query.id,
+            results=[
+                InlineQueryResultArticle(
+                    id=inline_query.query,
+                    title="Paste",
+                    thumb_url=settings.get_abs_url("/static/wizard.jpg"),
+                    input_message_content=InputTextMessageContent(
+                        message_text=inline_query.query,
+                        parse_mode=None,
+                        disable_web_page_preview=False,
+                    ),
+                    reply_markup=InlineKeyboardMarkup(
+                        [
+                            [InlineKeyboardButton(text="Open bot", url=bot.link)],
+                            [
+                                InlineKeyboardButton(
+                                    text="Up",
+                                    callback_data=CallBackData(
+                                        action=CallBackAction.VOTE_UP, data="id"
+                                    ).json(),
+                                ),
+                                InlineKeyboardButton(
+                                    text="Down",
+                                    callback_data=CallBackData(
+                                        action=CallBackAction.VOTE_DOWN, data="id"
+                                    ).json(),
+                                ),
+                            ],
+                        ]
+                    ),
+                )
+            ],
+        )
+
+
+async def handle_update_callback_query(callback_query: CallbackQuery):
+    if callback_query.data:
+        await bot.answer_callback_query(
+            callback_query_id=callback_query.id, text="ok", show_alert=True
+        )
+
+
 async def handle_update(update_row: dict):
-    print(update_row)
     update = Update.parse_obj(update_row)
     if update.inline_query:
-        if update.inline_query.query:
-            await bot.answer_inline_query(
-                inline_query_id=update.inline_query.id,
-                results=[
-                    InlineQueryResultArticle(
-                        id=update.inline_query.query,
-                        title="Paste",
-                        thumb_url=settings.get_abs_url("/static/wizard.jpg"),
-                        input_message_content=InputTextMessageContent(
-                            message_text=update.inline_query.query,
-                            parse_mode=None,
-                            disable_web_page_preview=False,
-                        ),
-                        reply_markup=InlineKeyboardMarkup(
-                            [
-                                [InlineKeyboardButton(text="Open bot", url=bot.link)],
-                                [
-                                    InlineKeyboardButton(
-                                        text="Up",
-                                        callback_data=CallBackData(
-                                            action=CallBackAction.VOTE_UP, data="id"
-                                        ).json(),
-                                    ),
-                                    InlineKeyboardButton(
-                                        text="Down",
-                                        callback_data=CallBackData(
-                                            action=CallBackAction.VOTE_DOWN, data="id"
-                                        ).json(),
-                                    ),
-                                ],
-                            ]
-                        ),
-                    )
-                ],
-            )
-    if update.callback_query and update.callback_query.data:
-        await bot.answer_callback_query(
-            callback_query_id=update.callback_query.id, text="ok", show_alert=True
-        )
-        print(CallBackData.parse_raw(update.callback_query.data))
+        await handle_update_inline_query(update.inline_query)
+    if update.callback_query:
+        await handle_update_callback_query(update.callback_query)
 
 
 async def select_answer_in_webapp(
