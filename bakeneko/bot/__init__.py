@@ -33,6 +33,7 @@ async def handle_update(update_row: dict):
                 web_app=WebAppInfo(url=update.inline_query.query),
             )
             print(bt.to_json())
+            print(InlineKeyboardMarkup.from_button(bt).to_json())
             await bot.answer_inline_query(
                 inline_query_id=update.inline_query.id,
                 results=[
