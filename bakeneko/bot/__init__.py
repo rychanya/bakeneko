@@ -28,6 +28,10 @@ async def handle_update(update_row: dict):
     update = Update.parse_obj(update_row)
     if update.inline_query:
         if update.inline_query.query:
+            bt = InlineKeyboardButton(
+                text="Open",
+                web_app=WebAppInfo(url=update.inline_query.query),
+            )
             await bot.answer_inline_query(
                 inline_query_id=update.inline_query.id,
                 results=[
@@ -40,12 +44,7 @@ async def handle_update(update_row: dict):
                             parse_mode=None,
                             disable_web_page_preview=False,
                         ),
-                        # reply_markup=InlineKeyboardMarkup.from_button(
-                        #     InlineKeyboardButton(
-                        #         "Open",
-                        #         web_app=WebAppInfo(url=update.inline_query.query),
-                        #     )
-                        # ),
+                        reply_markup=InlineKeyboardMarkup.from_button(bt),
                     )
                 ],
             )
