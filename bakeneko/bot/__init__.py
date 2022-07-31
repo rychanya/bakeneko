@@ -25,15 +25,10 @@ async def init_bot(web_hook_url: str, web_app_menu_url: str):
 
 
 async def handle_update(update_row: dict):
+    print(update_row)
     update = Update.parse_obj(update_row)
     if update.inline_query:
         if update.inline_query.query:
-            bt = InlineKeyboardButton(
-                text="Open",
-                web_app=WebAppInfo(url=update.inline_query.query),
-            )
-            print(bt.to_json())
-            print(InlineKeyboardMarkup.from_button(bt).to_json())
             await bot.answer_inline_query(
                 inline_query_id=update.inline_query.id,
                 results=[
@@ -46,7 +41,11 @@ async def handle_update(update_row: dict):
                             parse_mode=None,
                             disable_web_page_preview=False,
                         ),
-                        # reply_markup=InlineKeyboardMarkup.from_button(bt),
+                        reply_markup=InlineKeyboardMarkup.from_button(
+                            InlineKeyboardButton(
+                                text="Open", callback_data=update.inline_query.query
+                            )
+                        ),
                     )
                 ],
             )
