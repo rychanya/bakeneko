@@ -1,3 +1,5 @@
+from enum import Enum
+
 from pydantic import BaseModel, Field
 
 
@@ -23,7 +25,22 @@ class Message(BaseModel):
     web_app_data: WebAppData | None
 
 
+class CallbackQuery(BaseModel):
+    id: str
+    from_: User = Field(..., alias="from")
+    data: str | None
+
+
 class Update(BaseModel):
     update_id: int
     message: Message | None
     inline_query: InlineQuery | None
+    callback_query: CallbackQuery | None
+
+class CallBackAction(str, Enum):
+    VOTE_UP = "VOTE_UP"
+    VOTE_DOWN = "VOTE_DOWN"
+
+class CallBackData(BaseModel):
+    action: CallBackAction
+    data: str

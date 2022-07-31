@@ -8,7 +8,7 @@ from telegram import (
     WebAppInfo,
 )
 
-from bakeneko.bot.models import Update
+from bakeneko.bot.models import CallBackAction, CallBackData, Update
 from bakeneko.config import settings
 from bakeneko.web.dependencies import CheckInitData
 
@@ -41,14 +41,33 @@ async def handle_update(update_row: dict):
                             parse_mode=None,
                             disable_web_page_preview=False,
                         ),
-                        reply_markup=InlineKeyboardMarkup.from_button(
-                            InlineKeyboardButton(
-                                text="Open", callback_data=update.inline_query.query
-                            )
+                        reply_markup=InlineKeyboardMarkup(
+                            [
+                                [InlineKeyboardButton(text="Open bot", url=bot.link)],
+                                [
+                                    InlineKeyboardButton(
+                                        text="Up",
+                                        callback_data=CallBackData(
+                                            action=CallBackAction.VOTE_UP, data="id"
+                                        ).json(),
+                                    ),
+                                    InlineKeyboardButton(
+                                        text="Down",
+                                        callback_data=CallBackData(
+                                            action=CallBackAction.VOTE_DOWN, data="id"
+                                        ).json(),
+                                    ),
+                                ],
+                            ]
                         ),
                     )
                 ],
             )
+    if update.callback_query and update.callback_query.data:
+        await bot.answer_callback_query(
+            callback_query_id=update.callback_query.id, text="ok", show_alert=True
+        )
+        print(CallBackData.parse_raw(update.callback_query.data))
 
 
 async def select_answer_in_webapp(
