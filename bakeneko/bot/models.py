@@ -37,9 +37,11 @@ class Update(BaseModel):
     inline_query: InlineQuery | None
     callback_query: CallbackQuery | None
 
+
 class CallBackAction(str, Enum):
     VOTE_UP = "VOTE_UP"
     VOTE_DOWN = "VOTE_DOWN"
+
 
 class CallBackData(BaseModel):
     action: CallBackAction
