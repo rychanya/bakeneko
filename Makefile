@@ -1,4 +1,4 @@
-all: prety lint test
+all: prety lint pytest
 lint:
 	poetry run flake8 . --ignore E501,W503
 prety:
@@ -6,13 +6,9 @@ prety:
 	poetry run black .
 serv:
 	docker compose up --build
-test-start:
-	BAKENEKO_TARGET=dev docker compose up -d --build
-	docker wait bakeneko-web
-test-report:
-	rm -rf ./reports/*
-	docker cp bakeneko-web:/code/htmlcov ./reports/cov
-	docker cp bakeneko-web:/code/report.html ./reports/report.html
-test-end:
-	docker compose down -v
-test: test-start test-report test-end
+pytest:
+	poetry run pytest --cov-report html --cov=bakeneko tests/ --html=report.html --self-contained-html
+serv-loc:
+	poetry run uvicorn bakeneko.web:app --reload
+db:
+	docker run --name test-db -p 5432:5432 -e POSTGRES_USER=user -e POSTGRES_PASSWORD=pass -e POSTGRES_DB=db -d postgres

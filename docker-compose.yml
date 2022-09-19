@@ -26,28 +26,12 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   web:
-    container_name: bakeneko-web
+    container_name: bakeneko
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.web.rule=Host(`${BAKENEKO_HOST}`)"
       - "traefik.http.routers.web.entrypoints=websecure"
       - "traefik.http.routers.web.tls.certresolver=myresolver"
-    build:
-      target: ${BAKENEKO_TARGET:-prod}
+    build: .
     env_file:
       - .env
-    depends_on:
-      - db
-      
-  db:
-    image: postgres
-    container_name: bakeneko-db
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    expose:
-      - ${POSTGRES_PORT}
-    env_file:
-      - .env
-
-volumes:
-  postgres_data:

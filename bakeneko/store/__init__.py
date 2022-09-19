@@ -1,58 +1,15 @@
-from abc import ABC
-
-from bakeneko.models import Answer, AnswerDB
-
-emoji_dict = {True: "🟢", False: "🔴", None: "⚪"}
-
-
-async def search(q: str):
-    return [
-        {
-            "id": "1",
-            "title": "title",
-            "type": "type",
-            "answers": ["1", "2", "3"],
-        },
-        {
-            "id": "2",
-            "title": "title",
-            "type": "type",
-            "answers": ["1", "2", "3"],
-        },
-        {
-            "id": "3",
-            "title": "title",
-            "type": "type",
-            "answers": ["1", "2", "3"],
-        },
-        {
-            "id": "4",
-            "title": "title",
-            "type": "type",
-            "answers": ["1", "2", "3"],
-        },
-    ]
+from bakeneko.settings import StoreType, app_settings
+from bakeneko.store.base import BaseStore
+from bakeneko.store.SQLStore import SQLStore
+from bakeneko.store.SQLStore.settings import settings
 
 
-async def get_answer_by_id(answer_id):
-    return {
-        "id": answer_id,
-        "title": "title",
-        "type": "type",
-        "answers": ["1", "2", "3"],
-    }
+def init_store() -> BaseStore:
+    match app_settings.store_type:
+        case StoreType.SQLStore:
+            return SQLStore(db_url=settings.db_url, echo=settings.echo)
+        case _:
+            raise ValueError
 
 
-class AnswerStore(ABC):  # pragma: no cover
-    items_for_page = 10
-
-    def insert(self, answer: Answer, user_id: str) -> tuple[AnswerDB, bool]:
-        ...
-
-    def get(self, answer_id: str) -> AnswerDB | None:
-        ...
-
-    def search(
-        self, q: str, only_correct: bool = True, page: int = 1
-    ) -> list[AnswerDB]:
-        ...
+store = init_store()

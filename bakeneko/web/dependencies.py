@@ -5,7 +5,6 @@ from urllib.parse import parse_qsl
 from fastapi import Form, HTTPException, status
 from pydantic import ValidationError
 
-from bakeneko.bot.models import User
 from bakeneko.config import settings
 
 
@@ -33,6 +32,6 @@ class CheckInitData:
             raise self._error
         try:
             self.query_id = init_dict["query_id"]
-            self.user = User.parse_raw(init_dict["user"])
+            # self.user = User.parse_raw(init_dict["user"])
         except (KeyError, ValidationError):
             raise self._error
